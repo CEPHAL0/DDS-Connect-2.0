@@ -1,2 +1,6 @@
 *
+!*/
+!images/**/.gitkeep
+!images/*.png
+!images/*.jpg
 !.gitignore
