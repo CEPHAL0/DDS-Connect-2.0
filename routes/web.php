@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\admin\FormController as AdminFormController;
+
 Route::get('/', function () {
     if (!Auth::user()) {
         return redirect('/login');
@@ -11,15 +13,29 @@ Route::get('/', function () {
 });
 
 
-// Route::view('/login', 'auth.login')->name("login");
+Route::view('/login', 'auth.login')->name("login");
 
-// Route::view('/register', 'auth.register')->name('register');
+Route::view('/register', 'auth.register')->name('register');
 
 
 
 Route::prefix('admin')->middleware(["auth", 'role:admin', 'preventBackHistory'])->group(
     function () {
-        Route::view("/home", 'admin.app')->name("admin.home");
+        // Route::view("/", 'admin.app')->name("admin.home");
+    
+        Route::get("/forms", [AdminFormController::class, "index"])->name("adminForms.index");
+        Route::get("/", [AdminFormController::class, "index"])->name("admin.home");
+
+    }
+);
+
+Route::middleware(["auth", 'role:admin,moderator', 'preventBackHistory'])->group(
+    function () {
+        Route::get("/forms/create", [AdminFormController::class, "create"])->name("forms.create");
+        Route::post("/forms/store", [AdminFormController::class, "store"])->name("forms.store");
+        Route::post("/forms/toggle/{formId}", [AdminFormController::class, "toggleFormStatus"])->name("forms.toggleFormStatus");
+        Route::get("/forms/questions/add/{formId}", [AdminFormController::class, "addQuestionsToForm"])->name("forms.addQuestions");
+        Route::post("/forms/questions/store/{formId}", [AdminFormController::class, "storeQuestionsToForm"])->name("forms.storeQuestions");
     }
 );
 

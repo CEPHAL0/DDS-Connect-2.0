@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Home')
+@section('title', 'Forms')
 
 @section('content')
     <div class="p-10 flex flex-col gap-7">
