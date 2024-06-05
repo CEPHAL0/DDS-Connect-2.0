@@ -5,6 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\_FormRequest;
 use App\Models\Form;
+use App\Models\Question;
+use App\Models\Value;
+use Exception;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -54,8 +57,54 @@ class FormController extends Controller
         return view("admin.forms.addQuestions", compact("form"));
     }
 
-    public function storeQuestionsToForm(Request $request)
+    public function storeQuestionsToForm(Request $request, int $formId)
     {
-        dd($request);
+        $data = $request->input();
+
+        $form = Form::findOrFail($formId);
+
+        if (count($form->questions) > 0) {
+            throw new Exception("Form already has questions");
+        }
+
+        $questions = $data['questions'];
+        $types = $data["type"];
+
+        $questionCount = count($questions);
+        $values = [];
+        $newIndex = 0;
+
+        // Resetting values index
+        foreach ($data["values"] as $value) {
+            $values[$newIndex] = $value;
+            $newIndex++;
+        }
+
+
+        foreach ($questions as $index => $question) {
+            $question = Question::create([
+                "question" => $question,
+                "type" => $types[$index],
+                "form_id" => $form->id
+            ]);
+
+            if ($question->type == "single" || $question->type == 'multiple') {
+                foreach ($values[$index] as $indexValue => $value) {
+                    $value = Value::create([
+                        "question_id" => $question->id,
+                        "value" => $value
+                    ]);
+                }
+            }
+        }
+
+        return redirect(route("adminForms.index"))->with("success", "Added Questions to form successfully");
+    }
+
+
+    public function viewForm(int $formId)
+    {
+        $form = Form::with(["questions", "questions.values"])->findOrFail($formId);
+        dd($form);
     }
 }

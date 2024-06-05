@@ -36,6 +36,7 @@ Route::middleware(["auth", 'role:admin,moderator', 'preventBackHistory'])->group
         Route::post("/forms/toggle/{formId}", [AdminFormController::class, "toggleFormStatus"])->name("forms.toggleFormStatus");
         Route::get("/forms/questions/add/{formId}", [AdminFormController::class, "addQuestionsToForm"])->name("forms.addQuestions");
         Route::post("/forms/questions/store/{formId}", [AdminFormController::class, "storeQuestionsToForm"])->name("forms.storeQuestions");
+        Route::get("/form/view/questions/{formId}", [AdminFormController::class, "viewForm"])->name("admin.viewForm");
     }
 );
 
