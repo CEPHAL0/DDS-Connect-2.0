@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\admin\FormController as AdminFormController;
+use App\Http\Controllers\admin\HomeController as AdminHomeController;
+use App\Http\Controllers\admin\MemberController as AdminMemberController;
 
 Route::get('/', function () {
     if (!Auth::user()) {
@@ -24,7 +26,8 @@ Route::prefix('admin')->middleware(["auth", 'role:admin', 'preventBackHistory'])
         // Route::view("/", 'admin.app')->name("admin.home");
     
         Route::get("/forms", [AdminFormController::class, "index"])->name("adminForms.index");
-        Route::get("/", [AdminFormController::class, "index"])->name("admin.home");
+        Route::get("/", [AdminHomeController::class, "home"])->name("admin.home");
+        Route::get("/members", [AdminMemberController::class, "index"])->name("adminMembers.index");
 
     }
 );

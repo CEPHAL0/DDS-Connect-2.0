@@ -27,4 +27,9 @@ class Form extends Model
     {
         return $this->hasMany(Question::class, "form_id");
     }
+
+    public function responseUsers(): HasMany
+    {
+        return $this->hasMany(ResponseUser::class, "form_id");
+    }
 }

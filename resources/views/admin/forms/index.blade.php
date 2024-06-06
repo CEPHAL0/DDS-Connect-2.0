@@ -3,15 +3,18 @@
 @section('title', 'Forms')
 
 @section('content')
-    <div class="p-10 flex flex-col gap-7">
-
+    <div class="flex flex-col items-center gap-9">
+        <h1 class="font-bold text-3xl">All Forms</h1>
         @forelse ($forms as $form)
-            <a href="{{ route('admin.viewForm', $form->id) }}">
-                <div class="flex border border-black px-3 py-4 rounded-md justify-between bg-gray-100">
+            <a href="{{ route('admin.viewForm', $form->id) }}" class="w-full">
+                <div class="flex  px-6 py-5 border shadow-md shadow-gray-400 rounded-md justify-between ">
                     <div class=" flex flex-col gap-4">
                         <div class="flex flex-col">
                             <h1 class="font-bold text-2xl">{{ $form->title }}</h1>
-                            <span class="text-sm text-gray-500">{{ $form->user->username }}</span>
+                            <div>
+                                <span class="text-sm text-gray-500">{{ $form->user->username }}</span> -
+                                <span class="text-sm text-gray-500">{{ $form->created_at->format('M d') }}</span>
+                            </div>
                         </div>
                         <div class="text-sm">{{ $form->description ?? '' }}</div>
                     </div>
@@ -38,9 +41,12 @@
             <p>No form found</p>
         @endforelse
 
-        <button>
-            <a href="{{ route('forms.create') }}">Create Form</a>
-        </button>
+        <a href="{{ route('forms.create') }}">
+            <button type="submit" class="bg-black px-3 py-3 rounded-md text-white focus:ring-2 ring-black ring-offset-1"
+                id="submitForm">
+                Create Form
+            </button>
+        </a>
 
     </div>
 

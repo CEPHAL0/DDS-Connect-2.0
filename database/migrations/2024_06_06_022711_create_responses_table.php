@@ -12,19 +12,16 @@ return new class extends Migration {
     {
         Schema::create('responses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("response_user_id");
             $table->text("question");
-            $table->text("answer");
-            $table->unsignedBigInteger("user_id");
+            $table->longText("answer");
             $table->unsignedBigInteger("question_id");
-            $table->unsignedBigInteger("form_id");
-
-            $table->timestamps();
 
 
-            $table->foreign("user_id")->references("id")->on("users")->onUpdate("cascade")->onDelete("restrict");
+
+            $table->foreign("response_user_id")->references("id")->on("response_users")->onUpdate("cascade")->onDelete("restrict");
             $table->foreign("question_id")->references("id")->on("questions")->onUpdate("cascade")->onDelete("restrict");
-            $table->foreign("form_id")->references("id")->on("forms")->onUpdate("cascade")->onDelete("restrict");
-
+            $table->timestamps();
         });
     }
 

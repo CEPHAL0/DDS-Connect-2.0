@@ -10,10 +10,11 @@ class Response extends Model
     use HasFactory;
 
     protected $fillable = [
+        "response_user_id",
         "question",
         "answer",
-        "user_id",
-        "question_id",
-        "form_id"
+        "question_id"
     ];
+
+    
 }

@@ -30,7 +30,9 @@ class FormController extends Controller
         $data = $request->validated();
         $data["user_id"] = $user->id;
         $form = Form::create($data);
-        return redirect(route("admin.home"))->with("success", "Form created successfully");
+
+        return redirect(route("forms.addQuestions", $form->id))->with("success", "Form Created Successfully");
+
     }
 
     public function toggleFormStatus(Request $request, int $formId)
@@ -44,7 +46,7 @@ class FormController extends Controller
         }
         $form->save();
         $form->refresh();
-        return redirect(route('admin.home'))->with("success", "Toggle form status successfully");
+        return redirect()->back()->with("success", "Toggle form status successfully");
     }
 
 
@@ -105,6 +107,6 @@ class FormController extends Controller
     public function viewForm(int $formId)
     {
         $form = Form::with(["questions", "questions.values"])->findOrFail($formId);
-        dd($form);
+        return view('admin.forms.view', compact("form"));
     }
 }
