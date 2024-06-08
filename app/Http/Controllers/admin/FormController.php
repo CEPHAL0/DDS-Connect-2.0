@@ -9,6 +9,8 @@ use App\Models\Question;
 use App\Models\Value;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FormController extends Controller
 {
@@ -108,5 +110,33 @@ class FormController extends Controller
     {
         $form = Form::with(["questions", "questions.values"])->findOrFail($formId);
         return view('admin.forms.view', compact("form"));
+    }
+
+    public function destroy(int $formId)
+    {
+        DB::beginTransaction();
+        try {
+            $form = Form::findOrFail($formId);
+            $questions = $form->questions;
+
+            foreach ($questions as $question) {
+                $values = $question->values;
+                if ($values) {
+                    foreach ($values as $value) {
+                        $value->delete();
+                    }
+                }
+                $question->delete();
+            }
+
+            $form->delete();
+            DB::commit();
+            return redirect(route("adminForms.index"))->with("success", "Form Deleted Successfully");
+
+        } catch (Exception $e) {
+            DB::rollback();
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors(["error" => "Failed to delete form"]);
+        }
     }
 }

@@ -39,13 +39,22 @@
                         @endif
                     @endforeach
                 </div>
+
+                <form action="{{ route('adminForms.destroy', $form->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class=" bg-red-500 border border-red-500 w-fit px-10 py-4 text-white rounded-md focus:ring-2 ring-red-500 ring-offset-1 hover:text-red-500 hover:bg-white ease-in-out duration-200 font-semibold">
+                        Delete Form
+                    </button>
+                </form>
             </div>
 
 
             <div class="flex flex-col gap-20 items-center">
                 <div class="flex flex-col items-center gap-3">
                     <img src="{{ asset('storage/images/users/' . $form->user->profile_image_url) }}" alt=""
-                        class="w-48 h-48 rounded-full">
+                        class="w-48 h-48 rounded-full object-cover object-top">
                     <h2>{{ $form->user->name }} - <span class="italic text-gray-500">{{ $form->user->username }}</span>
                     </h2>
                 </div>

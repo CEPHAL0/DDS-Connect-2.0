@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\FormController as AdminFormController;
 use App\Http\Controllers\admin\HomeController as AdminHomeController;
 use App\Http\Controllers\admin\MemberController as AdminMemberController;
+use App\Http\Controllers\admin\EventController as AdminEventController;
 
 Route::get('/', function () {
     if (!Auth::user()) {
@@ -28,7 +29,13 @@ Route::prefix('admin')->middleware(["auth", 'role:admin', 'preventBackHistory'])
         Route::get("/forms", [AdminFormController::class, "index"])->name("adminForms.index");
         Route::get("/", [AdminHomeController::class, "home"])->name("admin.home");
         Route::get("/members", [AdminMemberController::class, "index"])->name("adminMembers.index");
-
+        Route::get("/members/create", [AdminMemberController::class, "create"])->name("adminMembers.create");
+        Route::get("/members/edit/{memberId}", [AdminMemberController::class, "edit"])->name("adminMembers.edit");
+        Route::post("/members/store", [AdminMemberController::class, "store"])->name("adminMembers.store");
+        Route::put("/members/update/{memberId}", [AdminMemberController::class, "update"])->name("adminMembers.update");
+        Route::delete("/members/delete/{memberId}", [AdminMemberController::class, "destroy"])->name("adminMembers.destroy");
+        Route::get("/events", [AdminEventController::class, "index"])->name("adminEvents.index");
+        Route::get("/events/show/{eventId}", [AdminEventController::class, "show"])->name("adminEvents.show");
     }
 );
 
@@ -40,6 +47,7 @@ Route::middleware(["auth", 'role:admin,moderator', 'preventBackHistory'])->group
         Route::get("/forms/questions/add/{formId}", [AdminFormController::class, "addQuestionsToForm"])->name("forms.addQuestions");
         Route::post("/forms/questions/store/{formId}", [AdminFormController::class, "storeQuestionsToForm"])->name("forms.storeQuestions");
         Route::get("/form/view/questions/{formId}", [AdminFormController::class, "viewForm"])->name("admin.viewForm");
+        Route::delete("/form/delete/{formId}", [AdminFormController::class, "destroy"])->name("adminForms.destroy");
     }
 );
 

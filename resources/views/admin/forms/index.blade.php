@@ -5,6 +5,13 @@
 @section('content')
     <div class="flex flex-col items-center gap-9">
         <h1 class="font-bold text-3xl">All Forms</h1>
+        <a href="{{ route('forms.create') }}">
+            <button type="submit"
+                class="border border-black bg-black px-3 py-3 rounded-md text-white focus:ring-2 ring-black ring-offset-1 hover:text-black hover:bg-white ease-in-out duration-200 font-semibold"
+                id="submitForm">
+                Create Form
+            </button>
+        </a>
         @forelse ($forms as $form)
             <a href="{{ route('admin.viewForm', $form->id) }}" class="w-full">
                 <div class="flex  px-6 py-5 border shadow-md shadow-gray-400 rounded-md justify-between ">
@@ -41,12 +48,7 @@
             <p>No form found</p>
         @endforelse
 
-        <a href="{{ route('forms.create') }}">
-            <button type="submit" class="bg-black px-3 py-3 rounded-md text-white focus:ring-2 ring-black ring-offset-1"
-                id="submitForm">
-                Create Form
-            </button>
-        </a>
+
 
     </div>
 

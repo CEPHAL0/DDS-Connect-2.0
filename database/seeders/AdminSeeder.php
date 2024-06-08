@@ -23,5 +23,7 @@ class AdminSeeder extends Seeder
             "role" => "admin",
             "profile_image_url" => "default.jpg"
         ]);
+
+      
     }
 }

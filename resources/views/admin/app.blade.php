@@ -16,13 +16,15 @@
                 </button></a>
 
 
-            <button
-                class="h-48 text-white aspect-square border border-black bg-black rounded-xl flex flex-col items-center justify-center hover:text-black hover:bg-white hover:fill-black ease-in-out duration-200 gap-4 shadow-md shadow-gray-700">
-                <span class="material-symbols-outlined scale-[2]">
-                    passkey
-                </span>
-                <p>Members</p>
-            </button>
+            <a href="{{ route('adminMembers.index') }}">
+                <button
+                    class="h-48 text-white aspect-square border border-black bg-black rounded-xl flex flex-col items-center justify-center hover:text-black hover:bg-white hover:fill-black ease-in-out duration-200 gap-4 shadow-md shadow-gray-700">
+                    <span class="material-symbols-outlined scale-[2]">
+                        passkey
+                    </span>
+                    <p>Members</p>
+                </button>
+            </a>
 
 
             <button

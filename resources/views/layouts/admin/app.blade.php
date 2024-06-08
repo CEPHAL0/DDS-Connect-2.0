@@ -23,6 +23,24 @@
 
     <body>
         @include('layouts.admin.navbar')
+
+        @if (session()->has('success'))
+            <li
+                class="text-green-600 bg-gray-100 w-fit p-4 ml-10 rounded-md font-bold sessionContainer fixed top-24 animate-pulse">
+                {{ session()->get('success') }}
+            </li>
+        @endif
+
+
+        @if ($errors->any())
+            <div class="text-red-500 p-10 sessionContainer">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="flex flex-col p-10">
             @yield('content')
         </div>
@@ -31,5 +49,11 @@
     </body>
 
     @yield('scripts')
+
+    <script>
+        setTimeout(() => {
+            $(".sessionContainer").hide();
+        }, 4000);
+    </script>
 
 </html>
