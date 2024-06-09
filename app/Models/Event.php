@@ -15,7 +15,8 @@ class Event extends Model
         "description",
         "capacity",
         "status",
-        "event_image_url"
+        "event_image_url",
+        "price"
     ];
 
 

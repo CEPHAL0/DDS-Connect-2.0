@@ -36,6 +36,12 @@ Route::prefix('admin')->middleware(["auth", 'role:admin', 'preventBackHistory'])
         Route::delete("/members/delete/{memberId}", [AdminMemberController::class, "destroy"])->name("adminMembers.destroy");
         Route::get("/events", [AdminEventController::class, "index"])->name("adminEvents.index");
         Route::get("/events/show/{eventId}", [AdminEventController::class, "show"])->name("adminEvents.show");
+        Route::get("/events/create", [AdminEventController::class, "create"])->name("adminEvents.create");
+        Route::post("/events/store", [AdminEventController::class, "store"])->name('adminEvents.store');
+        Route::get("/events/edit/{eventId}", [AdminEventController::class, "edit"])->name("adminEvents.edit");
+        Route::put("/events/update/{eventId}", [AdminEventController::class, "update"])->name("adminEvents.update");
+        Route::delete("/events/delete/{eventId}", [AdminEventController::class, "destroy"])->name("adminEvents.destroy");
+        Route::get("/events/toggle/{eventId}", [AdminEventController::class, "toggleStatus"])->name("adminEvents.toggleStatus");
     }
 );
 

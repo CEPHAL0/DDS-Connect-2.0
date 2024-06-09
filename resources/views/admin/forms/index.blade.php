@@ -47,9 +47,5 @@
         @empty
             <p>No form found</p>
         @endforelse
-
-
-
     </div>
-
 @endsection

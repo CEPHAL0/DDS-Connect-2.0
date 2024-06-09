@@ -48,7 +48,7 @@
                             <span class="text-sm text-gray-500">{{ $form->user->username }}</span>
                         </div>
                         <div class="text-sm">{{ $form->description ?? '' }}</div>
-                    </div>
+            </div>
 
                     <div>
                         <form action="{{ route('forms.toggleFormStatus', $form->id) }}" method="POST">
@@ -68,10 +68,10 @@
                     </div>
                 </div>
             @empty
-                <p>No form found</p>
+                <p class="text-center text-red-500 font-bold text-lg">No form found</p>
             @endforelse
         </div>
-
+     
     </div>
 
 @endsection
