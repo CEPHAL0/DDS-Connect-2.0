@@ -22,7 +22,7 @@
     </head>
 
     <body>
-        @include('layouts.admin.navbar')
+        @include('layouts.user.navbar')
 
         @if (session()->has('success'))
             <li

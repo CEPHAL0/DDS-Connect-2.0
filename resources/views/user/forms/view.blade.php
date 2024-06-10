@@ -1,4 +1,4 @@
-@extends('layouts.admin.app')
+@extends('layouts.user.app')
 
 @section('title', 'View Form')
 
@@ -8,7 +8,9 @@
             <div class="flex flex-col gap-8 w-[50%]">
                 <div>
                     <h1 class="text-3xl font-bold">{{ $form->title }}</h1>
-                 
+
+                    <p class="px-3 py-1 my-2 font-bold text-white rounded-md bg-darkGreen w-fit ">Already Filled</p>
+
                     <p class="text-sm text-gray-600">{{ $form->created_at->format('M d -  h:m') }}</p>
                 </div>
 
@@ -41,14 +43,6 @@
                     @endforeach
                 </div>
 
-                <form action="{{ route('adminForms.destroy', $form->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
-                        class="px-10 py-4 font-semibold text-white duration-200 ease-in-out bg-red-500 border border-red-500 rounded-md w-fit focus:ring-2 ring-red-500 ring-offset-1 hover:text-red-500 hover:bg-white">
-                        Delete Form
-                    </button>
-                </form>
             </div>
 
 

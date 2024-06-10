@@ -7,6 +7,12 @@ use App\Http\Controllers\admin\FormController as AdminFormController;
 use App\Http\Controllers\admin\HomeController as AdminHomeController;
 use App\Http\Controllers\admin\MemberController as AdminMemberController;
 use App\Http\Controllers\admin\EventController as AdminEventController;
+use App\Http\Controllers\admin\ResponseController as AdminResponseController;
+use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\StripePaymentController;
+use App\Http\Controllers\user\FormController as UserFormController;
+use App\Http\Controllers\user\EventController as UserEventController;
+use App\Http\Controllers\user\HomeController as UserHomeController;
 
 Route::get('/', function () {
     if (!Auth::user()) {
@@ -19,6 +25,8 @@ Route::get('/', function () {
 Route::view('/login', 'auth.login')->name("login");
 
 Route::view('/register', 'auth.register')->name('register');
+
+Route::post("/logout", [AuthController::class, "logout"])->name("logout");
 
 
 
@@ -42,6 +50,9 @@ Route::prefix('admin')->middleware(["auth", 'role:admin', 'preventBackHistory'])
         Route::put("/events/update/{eventId}", [AdminEventController::class, "update"])->name("adminEvents.update");
         Route::delete("/events/delete/{eventId}", [AdminEventController::class, "destroy"])->name("adminEvents.destroy");
         Route::get("/events/toggle/{eventId}", [AdminEventController::class, "toggleStatus"])->name("adminEvents.toggleStatus");
+
+        Route::get("/responses", [AdminResponseController::class, "index"])->name("adminResponses.index");
+        Route::get("/responses/view/{formId}", [AdminResponseController::class, "showResponse"])->name("adminResponses.showResponse");
     }
 );
 
@@ -59,6 +70,19 @@ Route::middleware(["auth", 'role:admin,moderator', 'preventBackHistory'])->group
 
 Route::middleware(["auth", 'role:user'])->group(
     function () {
-        Route::view("/home", 'user.app')->name("user.home");
+
+        Route::get("/home", [UserHomeController::class, "index"])->name("user.home");
+
+        Route::get("/forms", [UserFormController::class, "index"])->name("userForms.index");
+        Route::get("/forms/fill/{formId}", [UserFormController::class, "fill"])->name("userForms.fill");
+        Route::get("/forms/view/{formId}", [UserFormController::class, "view"])->name("userForms.view");
+        Route::post("/forms/submit/{formId}", [UserFormController::class, "submit"])->name("userForms.submit");
+
+        Route::get("/events", [UserEventController::class, "index"])->name("userEvents.index");
+
+
+        Route::get('/stripe', [StripePaymentController::class, 'stripe'])->name('stripe.index');
+        Route::get('stripe/checkout', [StripePaymentController::class, 'stripeCheckout'])->name('stripe.checkout');
+        Route::get('stripe/checkout/success', [StripePaymentController::class, 'stripeCheckoutSuccess'])->name('stripe.checkout.success');
     }
 );
