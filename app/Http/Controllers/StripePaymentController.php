@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use App\Models\EventBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -18,7 +20,8 @@ class StripePaymentController extends Controller
     {
         $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
 
-        $redirectUrl = route('stripe.checkout.success') . '?session_id={CHECKOUT_SESSION_ID}';
+        $redirectUrl = route('stripe.checkout.success', $request->eventId) . '?session_id={CHECKOUT_SESSION_ID}';
+
         $response = $stripe->checkout->sessions->create([
             'success_url' => $redirectUrl,
             'payment_method_types' => ['link', 'card'],
@@ -29,7 +32,7 @@ class StripePaymentController extends Controller
                             'name' => $request->product,
                         ],
                         'unit_amount' => 100 * $request->price,
-                        'currency' => 'USD',
+                        'currency' => 'NPR',
                     ],
                     'quantity' => 1
                 ],
@@ -41,7 +44,7 @@ class StripePaymentController extends Controller
         return redirect($response['url']);
     }
 
-    public function stripeCheckoutSuccess(Request $request)
+    public function stripeCheckoutSuccess(Request $request, int $eventId)
     {
         $stripe = new \Stripe\StripeClient(Config::get('stripe.stripe_secret_key'));
 
@@ -50,6 +53,17 @@ class StripePaymentController extends Controller
 
         $successMessage = "We have received your payment request and will let you know shortly.";
 
-        return view('success', compact('successMessage'));
+        $user = auth()->user();
+
+        $event = Event::findOrFail($eventId);
+
+        EventBooking::create([
+            "event_id" => $event->id,
+            "user_id" => $user->id,
+            "contact" => $user->email,
+            "payment" => "paid"
+        ]);
+
+        return redirect(route("userEvents.show", $eventId))->with("success", "Tickets Purchased Successfully");
     }
 }

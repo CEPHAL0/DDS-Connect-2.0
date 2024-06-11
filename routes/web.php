@@ -53,6 +53,7 @@ Route::prefix('admin')->middleware(["auth", 'role:admin', 'preventBackHistory'])
 
         Route::get("/responses", [AdminResponseController::class, "index"])->name("adminResponses.index");
         Route::get("/responses/view/{formId}", [AdminResponseController::class, "showResponse"])->name("adminResponses.showResponse");
+        Route::get("/responses/export/{formId}", [AdminResponseController::class, "export"])->name("adminResponses.export");
     }
 );
 
@@ -79,10 +80,12 @@ Route::middleware(["auth", 'role:user'])->group(
         Route::post("/forms/submit/{formId}", [UserFormController::class, "submit"])->name("userForms.submit");
 
         Route::get("/events", [UserEventController::class, "index"])->name("userEvents.index");
+        Route::get("/events/show/{eventId}", [UserEventController::class, "show"])->name("userEvents.show");
 
 
         Route::get('/stripe', [StripePaymentController::class, 'stripe'])->name('stripe.index');
         Route::get('stripe/checkout', [StripePaymentController::class, 'stripeCheckout'])->name('stripe.checkout');
-        Route::get('stripe/checkout/success', [StripePaymentController::class, 'stripeCheckoutSuccess'])->name('stripe.checkout.success');
+        Route::get('stripe/checkout/success/{eventId}', [StripePaymentController::class, 'stripeCheckoutSuccess'])->name('stripe.checkout.success');
+
     }
 );

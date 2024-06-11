@@ -80,7 +80,7 @@ class EventController extends Controller
 
         $event->update($data);
 
-        return redirect(route('adminEvents.index'))->with("success", "Event Updated Successfully");
+        return redirect(route("adminEvents.show", $event->id))->with("success", "Event Updated Successfully");
     }
 
 

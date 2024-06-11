@@ -8,19 +8,27 @@
             {{ $form->title }}</span>
     </h1>
 
-    <table class="overflow-scroll">
-        <thead class="text-white bg-black">
-            <tr>
+    <a href="{{ route('adminResponses.export', $form->id) }}" class="mx-auto">
+        <button type="submit"
+            class="px-3 py-3 mb-5 font-semibold text-white duration-200 ease-in-out bg-black border border-black rounded-md focus:ring-2 ring-black ring-offset-1 hover:text-black hover:bg-white w-fit"
+            id="submitForm">
+            Export to CSV
+        </button>
+    </a>
+
+    <table class="block w-full overflow-scroll h-[80vh] ">
+        <thead class="sticky z-20 text-white bg-black border-2 border-black -top-1 ">
+            <tr class="">
                 <th class="px-4 text-left border border-white">S.N</th>
                 @foreach ($form->questions as $question)
-                    <th class="p-4 text-left border border-white w-96">{{ $question->question }}</th>
+                    <th class="p-4 text-left border border-white w-96 whitespace-nowrap">{{ $question->question }}</th>
                 @endforeach
             </tr>
         </thead>
         <tbody>
             @foreach ($form->responseUsers as $responseUser)
-                <tr class="border-2 border-black divide-x-2 divide-y-2 divide-black">
-                    <td class="h-10 px-4 border-l-2 border-black">{{ $loop->iteration }}</td>
+                <tr class="border-2 border-black hover:bg-slate-200">
+                    <td class="h-10 px-4 border-2 border-black ">{{ $loop->iteration }}</td>
                     @foreach ($form->questions as $question)
                         @php
                             $response = $responseUser->responses->firstWhere('question_id', $question->id);

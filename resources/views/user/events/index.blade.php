@@ -1,4 +1,4 @@
-@extends('layouts.admin.app')
+@extends('layouts.user.app')
 
 @section('title', 'Events')
 
@@ -7,13 +7,13 @@
 
     <div class="flex flex-wrap items-start justify-center gap-10 mt-10">
         @foreach ($events as $event)
-            <a href="{{ route('adminEvents.show', $event->id) }}" class="flex flex-col items-start">
+            <a href="{{ route('userEvents.show', $event->id) }}" class="flex flex-col items-start">
                 <div class="flex flex-col items-center">
                     <div class="relative flex items-center justify-center mb-2 overflow-hidden eventBanner">
                         <div
                             class="absolute top-0 z-20 hidden w-full h-full text-white bg-black rounded-md opacity-60 overlay">
                             <p class="mt-[50%] text-center font-bold">
-                                Book Now
+                                View Details
                             </p>
                         </div>
                         @if ($event->status == 'closed')

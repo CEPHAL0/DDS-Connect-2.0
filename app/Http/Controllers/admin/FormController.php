@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\_FormRequest;
 use App\Models\Form;
 use App\Models\Question;
+use App\Models\ResponseUser;
 use App\Models\Value;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class FormController extends Controller
 {
     public function index()
     {
-        $forms = Form::all();
+        $forms = Form::latest()->get();
         return view("admin.forms.index", compact("forms"));
     }
 
@@ -117,6 +118,19 @@ class FormController extends Controller
         DB::beginTransaction();
         try {
             $form = Form::findOrFail($formId);
+
+            $responseUsers = ResponseUser::where("form_id", $formId)->get();
+
+            foreach ($responseUsers as $responseUser) {
+                $responses = $responseUser->responses;
+                foreach ($responses as $response) {
+                    $response->delete();
+                }
+                $responseUser->delete();
+            }
+
+
+
             $questions = $form->questions;
 
             foreach ($questions as $question) {
